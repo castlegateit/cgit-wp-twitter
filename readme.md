@@ -4,7 +4,8 @@ Castlegate IT WP Twitter Feed is a Twitter feed plugin for WordPress. It provide
 
 ## Basic usage ##
 
-The plugin requires some setup. In wp-config, the following constants must be defined:
+The plugin requires some setup. In wp-config, the following constants must be defined:  
+
 *CGIT_TWITTER_KEY  
 
 *CGIT_TWITTER_SECRET  
