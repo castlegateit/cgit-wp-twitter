@@ -17,7 +17,7 @@ if (! defined('CGIT_TWITTER_USER')||! defined('CGIT_TWITTER_KEY') ||! defined('C
     add_action('admin_notices', 'cgit_twitter_notice_constants');
 }
 
-require_once("resources/twitteroauth/twitteroauth.php"); //Path to twitteroauth library
+require_once("twitteroauth/twitteroauth.php"); //Path to twitteroauth library
 
 function getConnectionWithAccessToken($cons_key, $cons_secret, $oauth_token, $oauth_token_secret) {
   $connection = new TwitterOAuth($cons_key, $cons_secret, $oauth_token, $oauth_token_secret);
