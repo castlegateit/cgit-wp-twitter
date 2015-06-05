@@ -109,7 +109,7 @@ function get_cached_twitter_feed($softLimit = 5)
     $method = 'status';
 
     // Server cache settings
-    $cache_file = '/cache/twitter-cache.html';
+    $cache_file = content_url() . '/cgit-cache/twitter-cache.html';
     $cache_time = 6; // 10 minutes
 
     // Generate output based on settings
