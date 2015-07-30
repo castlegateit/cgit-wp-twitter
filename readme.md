@@ -4,15 +4,17 @@ Castlegate IT WP Twitter Feed is a Twitter feed plugin for WordPress. It provide
 
 ## Basic usage ##
 
-The plugin requires some setup. In wp-config, the following constants must be defined:  
+The plugin requires some setup. In wp-config, the following constants must be defined:
 
-*CGIT_TWITTER_KEY  
+*CGIT_TWITTER_USER
 
-*CGIT_TWITTER_SECRET  
+*CGIT_TWITTER_KEY
 
-*CGIT_TWITTER_TOKEN  
+*CGIT_TWITTER_SECRET
 
-*CGIT_TWITTER_TOKEN_SECRET  
+*CGIT_TWITTER_TOKEN
+
+*CGIT_TWITTER_TOKEN_SECRET
 
 
 You can use the test tokens I set up for this purpose or set up your own app on twitter.
@@ -23,7 +25,7 @@ However, the important one is our user, which is the feed it will display:
 CGIT_TWITTER_USER
 
 This needs to be set to the 'Screen Name' of the profile to display (not necessarily their @username.)
-For example, we are CGIT are "@castlegateIT" and our screen name is 'CastlegateIT'.
+For example, we at CGIT are "@castlegateIT" and our screen name is 'CastlegateIT'.
 Jollydays are @JollydaysCamping but their screen name is 'JollydaysCampin' [sic]
 
 The function `get_cached_twitter_feed()` can be used to fetch a Facebook feed, using a cached file to store results for 10 minutes to prevent excessive API calls.
