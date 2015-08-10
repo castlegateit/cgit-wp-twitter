@@ -88,8 +88,8 @@ function get_twitter_feed($user, $count) {
             // Add links to text
             $text = $tweet['text'];
             $text = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank">$1</a>', $text);
-            $text = preg_replace('/(^|[^a-z0-9_])@([a-z0-9_]+)/i', '$1<a href="http://twitter.com/$2" target="_blank">@$2</a>', $text);
-            $text = preg_replace('/(^|[^a-z0-9_])#([a-z0-9_]+)/i', '$1<a href="http://search.twitter.com/search?q=%23$2" target="_blank">#$2</a>', $text);
+            $text = preg_replace('/(^|[^a-z0-9_])@([a-z0-9_]+)/i', '$1<a href="https://twitter.com/$2" target="_blank">@$2</a>', $text);
+            $text = preg_replace('/(^|[^a-z0-9_])#([a-z0-9_]+)/i', '$1<a href="https://search.twitter.com/search?q=%23$2" target="_blank">#$2</a>', $text);
             // Write output
             $output .= '<div class="tweet">';
             $output .= '<p>' . $text . '</p> ';
@@ -130,7 +130,7 @@ function get_cached_twitter_feed($softLimit = 5)
             }
         }
         // Always append "follow me" link
-        //$feed .= '<p><a target="_blank" href="http://twitter.com/' . $user . '">Follow us on Twitter</a></p>';
+        //$feed .= '<p><a target="_blank" href="https://twitter.com/' . $user . '">Follow us on Twitter</a></p>';
         return $feed;
     }
 }
