@@ -55,84 +55,98 @@ function get_twitter_feed($user, $count) {
             'image' => isset($item->retweeted_status->user->profile_image_url) ? $item->retweeted_status->user->profile_image_url : $item->user->profile_image_url
         );
     }
-        // Assemble output
-        $output = '';
-        foreach($tweets as $tweet) {
-            // Make timestamp
-            $time = strtotime($tweet['time']);
-            $since = time() - $time;
-            $stamp = '';
-            if($since < 60) {
-                // seconds
-                $stamp = 'Less than a minute ago';
-            } elseif($since < (60 * 60)) {
-                // minutes
-                $mins = $since / 60;
-                if(round($mins) == 1) {
-                    $stamp = 'About 1 minute ago';
-                } else {
-                    $stamp = 'About ' . round($mins) . ' minutes ago';
-                }
-            } elseif($since < (60 * 60 * 24)) {
-                // hours
-                $hours = $since / (60 * 60);
-                if(round($hours) == 1) {
-                    $stamp = 'About 1 hour ago';
-                } else {
-                    $stamp = 'About ' . round($hours) . ' hours ago';
-                }
+    // Assemble output
+    $output = '';
+    foreach($tweets as $tweet) {
+        // Make timestamp
+        $time = strtotime($tweet['time']);
+        $since = time() - $time;
+        $stamp = '';
+        if($since < 60) {
+            // seconds
+            $stamp = 'Less than a minute ago';
+        } elseif($since < (60 * 60)) {
+            // minutes
+            $mins = $since / 60;
+            if(round($mins) == 1) {
+                $stamp = 'About 1 minute ago';
             } else {
-                // days
-                $stamp = date('j F', $time);
+                $stamp = 'About ' . round($mins) . ' minutes ago';
             }
-            // Add links to text
-            $text = $tweet['text'];
-            $text = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank">$1</a>', $text);
-            $text = preg_replace('/(^|[^a-z0-9_])@([a-z0-9_]+)/i', '$1<a href="https://twitter.com/$2" target="_blank">@$2</a>', $text);
-            $text = preg_replace('/(^|[^a-z0-9_])#([a-z0-9_]+)/i', '$1<a href="https://search.twitter.com/search?q=%23$2" target="_blank">#$2</a>', $text);
-            // Write output
-            $output .= '<div class="tweet">';
-            $output .= '<p>' . $text . '</p> ';
-            $output .= '<span>' . $stamp . '</span>';
-            $output .= '</div>';
+        } elseif($since < (60 * 60 * 24)) {
+            // hours
+            $hours = $since / (60 * 60);
+            if(round($hours) == 1) {
+                $stamp = 'About 1 hour ago';
+            } else {
+                $stamp = 'About ' . round($hours) . ' hours ago';
+            }
+        } else {
+            // days
+            $stamp = date('j F', $time);
         }
-        $output .= '';
-        // Return
-        return $output;
+        // Add links to text
+        $text = $tweet['text'];
+        $text = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank">$1</a>', $text);
+        $text = preg_replace('/(^|[^a-z0-9_])@([a-z0-9_]+)/i', '$1<a href="https://twitter.com/$2" target="_blank">@$2</a>', $text);
+        $text = preg_replace('/(^|[^a-z0-9_])#([a-z0-9_]+)/i', '$1<a href="https://search.twitter.com/search?q=%23$2" target="_blank">#$2</a>', $text);
+        // Write output
+        $output .= '<div class="tweet">';
+        $output .= '<p>' . $text . '</p> ';
+        $output .= '<span>' . $stamp . '</span>';
+        $output .= '</div>';
     }
+    $output .= '';
+    // Return
+    return $output;
+}
 
 function get_cached_twitter_feed($softLimit = 5)
 {
     // General settings
     $user   = CGIT_TWITTER_USER;
     $count  = $softLimit;
-    $method = 'status';
 
     // Server cache settings
-    $cache_file = content_url() . '/cgit-cache/twitter-cache['.$softLimit.'].html';
-    $cache_time = 6; // 10 minutes
+    $cache_file = WP_CONTENT_DIR . '/cgit-cache/cgit-wp-twitter/cache['.$softLimit.'].html';
+    $cache_time = 600; // 10 minutes
 
     // Generate output based on settings
-    if($method == 'status') {
-        $feed = '';
-        // If recent cached version, use that
-        if(file_exists($cache_file) && time() - filemtime($cache_file) < $cache_time) {
-            $feed = file_get_contents($cache_file);
-        // Else, try to get feed from Twitter
-        } else {
-            $feed = get_twitter_feed($user, $count, $method);
-            // If feed available, use that
-            if($feed) {
+    $feed = '';
+    // If recent cached version, use that
+    if(file_exists($cache_file) && time() - filemtime($cache_file) < $cache_time)
+    {
+        $feed = file_get_contents($cache_file);
+    }
+    else
+    {
+        // Try to get feed from Twitter
+        $feed = get_twitter_feed($user, $count, $method);
+
+        // If feed available, use that
+        if($feed)
+        {
+            // Check the directory exists first!
+            if (!file_exists(WP_CONTENT_DIR . '/cgit-cache/cgit-wp-twitter'))
+            {
+                mkdir(WP_CONTENT_DIR . '/cgit-cache/cgit-wp-twitter','0777', true);
+            }
+
+            // If there was already a file there but it wasn't a directory, best just knock caching on the head.
+            if (is_dir(WP_CONTENT_DIR . '/cgit-cache/cgit-wp-twitter'))
+            {
+                // Fortunately, there wasn't.
                 file_put_contents($cache_file, $feed);
-            // Else, check for any cached version
-            } elseif(file_exists($cache_file)) {
-                $feed = file_get_contents($cache_file);
             }
         }
-        // Always append "follow me" link
-        //$feed .= '<p><a target="_blank" href="https://twitter.com/' . $user . '">Follow us on Twitter</a></p>';
-        return $feed;
+        elseif (file_exists($cache_file))
+        {
+            // Check for any cached version
+            $feed = file_get_contents($cache_file);
+        }
     }
+
+    return $feed;
 }
 
 function cgit_twitter_feed_shortcode ($atts) {
