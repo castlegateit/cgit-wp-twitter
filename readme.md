@@ -28,7 +28,7 @@ This needs to be set to the 'Screen Name' of the profile to display (not necessa
 For example, we at CGIT are "@castlegateIT" and our screen name is 'CastlegateIT'.
 Jollydays are @JollydaysCamping but their screen name is 'JollydaysCampin' [sic]
 
-The function `get_cached_twitter_feed()` can be used to fetch a Facebook feed, using a cached file to store results for 10 minutes to prevent excessive API calls.
+The function `get_cached_twitter_feed()` can be used to fetch a Twitter feed, using a cached file to store results for 10 minutes to prevent excessive API calls.
 
 ## Parameters ##
 
