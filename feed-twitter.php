@@ -17,11 +17,11 @@ if (! defined('CGIT_TWITTER_USER')||! defined('CGIT_TWITTER_KEY') ||! defined('C
     add_action('admin_notices', 'cgit_twitter_notice_constants');
 }
 
-if(!file_exists("twitteroauth/twitteroauth.php")){
+if(!file_exists(plugin_dir_path(__FILE__) . "twitteroauth/twitteroauth.php")){
     throw new Exception("Error: Please include twitteroauth at cgit-wp-twitter/twitteroauth/", 1);
 }
 
-require_once("twitteroauth/twitteroauth.php"); //Path to twitteroauth library
+require_once(plugin_dir_path(__FILE__) . "twitteroauth/twitteroauth.php"); //Path to twitteroauth library
 
 function getConnectionWithAccessToken($cons_key, $cons_secret, $oauth_token, $oauth_token_secret) {
   $connection = new TwitterOAuth($cons_key, $cons_secret, $oauth_token, $oauth_token_secret);
