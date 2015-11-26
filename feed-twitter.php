@@ -129,7 +129,8 @@ function get_cached_twitter_feed($softLimit = 5)
             // Check the directory exists first!
             if (!file_exists(WP_CONTENT_DIR . '/cgit-cache/cgit-wp-twitter'))
             {
-                mkdir(WP_CONTENT_DIR . '/cgit-cache/cgit-wp-twitter','0777', true);
+                mkdir(WP_CONTENT_DIR . '/cgit-cache/cgit-wp-twitter', 0777, true);
+                chmod(WP_CONTENT_DIR . '/cgit-cache/cgit-wp-twitter', 0777 )
             }
 
             // If there was already a file there but it wasn't a directory, best just knock caching on the head.
