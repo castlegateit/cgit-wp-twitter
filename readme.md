@@ -2,6 +2,8 @@
 
 **Development of this plugin has now stopped and its use is no longer recommended. The functions provided by this plugin can now be found in the Castlegate IT [Twitter Redux](http://github.com/castlegateit/cgit-wp-twitter-redux) plugin.**
 
+---
+
 Castlegate IT WP Twitter Feed is a Twitter feed plugin for WordPress. It provides functions for displaying a Facebook feed on a page, supporting caching. It requires at least PHP 5.3 and the Twitter oAuth resources.
 
 ## Basic usage ##
